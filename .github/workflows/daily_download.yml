@@ -36,10 +36,11 @@ jobs:
 
       # 4. 跑你的脚本（就这一行是“核心”）
       - run: python scripts/ASfactors-projected-daily.py
+      - run: python scripts/wind-gr.py
 
       # 5. 如果有新文件，就提交回 repo
       - run: |
-          git config user.name "github-actions[bot]"
+          git config user.name "github-actionss[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add data/as_factors_projected
