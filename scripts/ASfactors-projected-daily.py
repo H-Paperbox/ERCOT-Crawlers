@@ -1,9 +1,7 @@
 import requests
 from pathlib import Path
 
-# =========================
-# 已验证可用的接口
-# =========================
+# ========================= ERCOT setup =========================
 LIST_URL = "https://www.ercot.com/misapp/servlets/IceDocListJsonWS"
 LIST_PARAMS = {
     "reportTypeId": "24886"
@@ -11,9 +9,7 @@ LIST_PARAMS = {
 
 DOWNLOAD_URL = "https://www.ercot.com/misdownload/servlets/mirDownload"
 
-# =========================
-# 本地路径
-# =========================
+# ========================= Local setup =========================
 SAVE_DIR = Path("data/as_factors_projected")
 SAVE_DIR.mkdir(exist_ok=True)
 
@@ -28,9 +24,7 @@ HEADERS = {
     "Referer": "https://www.ercot.com/",
 }
 
-# =========================
-# 1. 拉文档列表
-# =========================
+# ========================= Find all available documents =========================
 resp = requests.get(
     LIST_URL,
     params=LIST_PARAMS,
@@ -41,21 +35,17 @@ resp.raise_for_status()
 
 docs = resp.json()["ListDocsByRptTypeRes"]["DocumentList"]
 
-# =========================
-# 2. 只下载“新的 CSV”
-# =========================
+# ========================= Download new documents =========================
 new_count = 0
 
 for item in docs:
     doc = item["Document"]
 
-    # 只要 CSV
     if not doc["FriendlyName"].endswith("_csv"):
         continue
 
     doc_id = doc["DocID"]
 
-    # 已下载过 → 跳过
     if doc_id in downloaded:
         continue
 
@@ -74,7 +64,7 @@ for item in docs:
     with open(save_path, "wb") as f:
         f.write(r.content)
 
-    # 记录下来，防止下次重复
+    # record the downloaded doc ID
     with open(RECORD_FILE, "a") as f:
         f.write(doc_id + "\n")
 
