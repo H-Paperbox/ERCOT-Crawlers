@@ -35,7 +35,7 @@ jobs:
       - run: pip install requests
 
       # 4. 跑你的脚本（就这一行是“核心”）
-      - run: python scripts/download_as_factors_projected.py
+      - run: python scripts/ASfactors-projected-daily.py
 
       # 5. 如果有新文件，就提交回 repo
       - run: |
