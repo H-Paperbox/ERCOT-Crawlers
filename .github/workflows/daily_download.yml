@@ -1,34 +1,47 @@
-name: Daily ERCOT Download
+name: Test Workflow
 
 on:
-  schedule:
-    - cron: "0 13 * * *"   # BJ 9pm CA 5am UTC 1pm
-  workflow_dispatch:       # 允许你手动点 Run
+  workflow_dispatch:
 
 jobs:
-  run-script:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 把你的 repo 拉下来
-      - uses: actions/checkout@v4
+      - run: echo "Hello from GitHub Actions"
 
-      # 2. 准备 Python
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
 
-      # 3. 安装依赖（你只用到了 requests）
-      - run: pip install requests
 
-      # 4. 跑你的脚本（就这一行是“核心”）
-      - run: python scripts/download_as_factors_projected.py
+# name: Daily ERCOT Download
 
-      # 5. 如果有新文件，就提交回 repo
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+# on:
+#   schedule:
+#     - cron: "0 13 * * *"   # BJ 9pm CA 5am UTC 1pm
+#   workflow_dispatch:       # 允许你手动点 Run
 
-          git add data/as_factors_projected
-          git diff --cached --quiet || git commit -m "Daily update: Projected AS factors"
-          git push
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # 1. 把你的 repo 拉下来
+#       - uses: actions/checkout@v4
+
+#       # 2. 准备 Python
+#       - uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.10"
+
+#       # 3. 安装依赖（你只用到了 requests）
+#       - run: pip install requests
+
+#       # 4. 跑你的脚本（就这一行是“核心”）
+#       - run: python scripts/download_as_factors_projected.py
+
+#       # 5. 如果有新文件，就提交回 repo
+#       - run: |
+#           git config user.name "github-actions[bot]"
+#           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+#           git add data/as_factors_projected
+#           git diff --cached --quiet || git commit -m "Daily update: Projected AS factors"
+#           git push
